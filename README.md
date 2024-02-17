@@ -20,8 +20,8 @@ pnpm vite
 
 - localization
 - download
-- credits
-- gh-pages
+- ~~credits~~
+- ~~gh-pages~~
 
 
 ## acknowledgments
