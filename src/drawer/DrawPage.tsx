@@ -1,10 +1,13 @@
-import { Component, onMount, createSignal, createEffect } from 'solid-js';
 import "./DrawPage.scss";
+import "../kobalte_css/kobalte_checkbox.scss";
+import { Component, onMount, createSignal, createEffect } from 'solid-js';
 
 import Drawer from './lib/drawer';
 
 import { Button, TextField } from "@kobalte/core";
 import FontSelect from './FontSelect';
+import { Checkbox } from "@kobalte/core";
+
 
 const DrawPage: Component = () => {
   let canvasRef: HTMLCanvasElement | undefined;
@@ -14,6 +17,7 @@ const DrawPage: Component = () => {
   const [textRed, setTextRed] = createSignal("5000兆円");
   const [textWhite, setTextWhite] = createSignal("欲しい！");
   const [selectedFont, setSelectedFont] = createSignal("Noto Sans JP");
+  const [useTransparent, setUseTransparent] = createSignal(false);
 
   // Enhanced drawing function with TypeScript annotation for context
   const drawSomething = () => {
@@ -22,6 +26,7 @@ const DrawPage: Component = () => {
       drawer = new Drawer(canvasRef);
     }
 
+    drawer.useTransparent = useTransparent();
     drawer.draw(textRed(), textWhite(), `100px ${selectedFont()}`);
   };
 
@@ -41,14 +46,24 @@ const DrawPage: Component = () => {
       
       <div class="buttons">
         <Button.Root class="icon-button" onClick={() => drawer?.saveImage()}>
-          <div class="i-fluent:arrow-download-48-filled">download</div>
+          <div class="i-tabler:arrow-bar-to-down">download</div>
         </Button.Root>
         <Button.Root class="icon-button" onClick={() => drawer?.openImage()}>
-          <div class="i-fluent:open-48-filled">open in new tab</div>
+          <div class="i-tabler:photo-share">open in new tab</div>
         </Button.Root>
         <Button.Root class="icon-button" onClick={() => drawer?.openImageDataURL()}>
-          <div class="i-fluent:open-in-browser-24-filled">open in new tab (data URL)</div>
+          <div class="i-tabler:photo-share">open in new tab</div>
+          <span>(data URL)</span>
         </Button.Root>
+
+        <Checkbox.Root class="checkbox"  checked={useTransparent()} onChange={setUseTransparent}>
+        <Checkbox.Input class="checkbox__input" />
+        <Checkbox.Control class="checkbox__control">
+          <Checkbox.Indicator>
+          </Checkbox.Indicator>
+        </Checkbox.Control>
+        <Checkbox.Label class="checkbox__label">transparent background</Checkbox.Label>
+      </Checkbox.Root>
       </div>
 
       <TextField.Root class="text-field" value={textRed()} onChange={setTextRed}>

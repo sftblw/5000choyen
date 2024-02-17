@@ -6,7 +6,10 @@ import transformerDirectives from '@unocss/transformer-directives'
 export default defineConfig({
   presets: [
     presetUno(),
-    presetIcons()
+    presetIcons({
+      prefix: "i-",
+      scale: 4
+    })
   ],
   transformers: [
     transformerDirectives(),

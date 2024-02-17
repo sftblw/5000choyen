@@ -19,9 +19,9 @@ dependencies:
     version: 1.8.15
 
 devDependencies:
-  '@iconify-json/fluent':
-    specifier: ^1.1.48
-    version: 1.1.48
+  '@iconify-json/tabler':
+    specifier: ^1.1.105
+    version: 1.1.105
   '@unocss/preset-icons':
     specifier: ^0.58.5
     version: 0.58.5
@@ -521,8 +521,8 @@ packages:
     resolution: {integrity: sha512-9TANp6GPoMtYzQdt54kfAyMmz1+osLlXdg2ENroU7zzrtflTLrrC/lgrIfaSe+Wu0b89GKccT7vxXA0MoAIO+Q==}
     dev: false
 
-  /@iconify-json/fluent@1.1.48:
-    resolution: {integrity: sha512-qp2/ETNldtnNBDKi6kMHGzkqx9ChINikdo5MuaZm9MziguSmij5DAfgOAs2aNoRVHdvMVD8BKcXTeVH8Sl8u8g==}
+  /@iconify-json/tabler@1.1.105:
+    resolution: {integrity: sha512-USJbNfa0fAHBLilxTKn70wkvFnopmfcomfpqD0ul/69uyZnonztHhyrbM8MI9Ua4eYXaPymoB7tuZ+Ionx6xfg==}
     dependencies:
       '@iconify/types': 2.0.0
     dev: true

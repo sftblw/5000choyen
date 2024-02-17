@@ -1,8 +1,8 @@
 import 'uno.css';
-import { render } from 'solid-js/web';
-
 import '@unocss/reset/tailwind-compat.css'
 import "./global.scss";
+
+import { render } from 'solid-js/web';
 
 import App from './App';
 

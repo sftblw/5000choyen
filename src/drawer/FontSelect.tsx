@@ -1,6 +1,6 @@
 import { Component, onMount, createSignal, createEffect, mergeProps, For, Accessor } from 'solid-js';
 import "./FontSelect.scss";
-import "./kobalte_select.scss";
+import "../kobalte_css/kobalte_select.scss";
 
 import { Select } from "@kobalte/core";
 

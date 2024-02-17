@@ -12,9 +12,7 @@ export default defineConfig({
     */
     // devtools(),
     solidPlugin(),
-    UnocssPlugin({
-      // your config or in uno.config.ts
-    }),
+    UnocssPlugin(),
   ],
   server: {
     port: 3000,

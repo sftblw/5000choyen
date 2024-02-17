@@ -1,6 +1,9 @@
 import TopText from "./top_text";
 import BottomText from "./bottom_text";
 
+
+
+
 export default class Drawer {
     canvas: HTMLCanvasElement;
     ctx: CanvasRenderingContext2D;
@@ -13,6 +16,8 @@ export default class Drawer {
     dragStartBottomTextPos: number;
 
     font: string
+    horizMargin: number
+    vertMargin: number
 
     constructor(canvas: HTMLCanvasElement) {
         this.canvas = canvas;
@@ -24,7 +29,7 @@ export default class Drawer {
         this.canvas.addEventListener('touchmove', this.onTouchMove.bind(this), false);
         this.canvas.addEventListener('touchend', this.onTouchEnd.bind(this), false);
 
-        
+
         this.ctx = canvas.getContext('2d');
         this.ctx.lineJoin = 'round';
         this.ctx.lineCap = 'round';
@@ -40,6 +45,8 @@ export default class Drawer {
         this.dragStartCursorPos = 0;
         this.dragStartBottomTextPos = 0;
 
+        this.horizMargin = 30;
+        this.vertMargin = 30;
     }
 
     draw(topText: string, bottomText: string, font: string) {
@@ -51,10 +58,10 @@ export default class Drawer {
 
     refresh() {
         this.clear();
-        
+
         this.topText.font = this.font;
         this.bottomText.font = this.font;
-    
+
         this.topText.draw();
         this.bottomText.draw();
     }
@@ -105,23 +112,23 @@ export default class Drawer {
         }
         document.body.style.cursor = "auto"
     }
-    
+
     onMouseDown(e: MouseEvent) {
         this.onCursorDown(e);
     };
-    
+
     onMouseMove(e: MouseEvent) {
         this.onCursorMove(e);
     };
-    
+
     onMouseUp(e: MouseEvent) {
         this.onCursorUp(e);
     };
-    
+
     onMouseLeave(e: MouseEvent) {
         this.onCursorLeave(e);
     };
-    
+
     onTouchStart(e: TouchEvent) {
         e.preventDefault();
         let eMock = Object.assign({
@@ -130,7 +137,7 @@ export default class Drawer {
         }, e) as unknown as MouseEvent;
         this.onCursorDown(eMock);
     };
-    
+
     onTouchMove(e: TouchEvent) {
         e.preventDefault();
         let eMock = Object.assign({
@@ -139,7 +146,7 @@ export default class Drawer {
         }, e) as unknown as MouseEvent;
         this.onCursorMove(eMock);
     };
-    
+
     onTouchEnd(e: TouchEvent) {
         e.preventDefault();
         let eMock = Object.assign({
@@ -149,32 +156,79 @@ export default class Drawer {
         this.onCursorUp(eMock);
     };
 
-    createCroppedCanvas() {
-        const width = Math.max(this.topText.x + this.topText.w, this.bottomText.x + this.bottomText.w);
-        const height = this.ctx.canvas.height;
-    
-        const data = this.ctx.getImageData(0, 0, width, height);
-        const canvas = document.createElement('canvas');
-        canvas.width = data.width;
-        canvas.height = data.height;
-    
-        const ctx = canvas.getContext('2d');
-        ctx.putImageData(data, 0, 0);
+    /// https://stackoverflow.com/a/22267731
+    cropImageFromCanvas(ctx: CanvasRenderingContext2D) {
+        let canvas = ctx.canvas;
+        let w = canvas.width;
+        let h = canvas.height;
 
-        return canvas;
+        let pix = { x: [], y: [] };
+
+        let imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+
+        let x: number;
+        let y: number;
+        let index: number;
+
+        for (y = 0; y < h; y++) {
+            for (x = 0; x < w; x++) {
+                index = (y * w + x) * 4;
+
+                let r = imageData.data[index + 0];
+                let g = imageData.data[index + 1];
+                let b = imageData.data[index + 2];
+                let a = imageData.data[index + 3];
+                let isWhite = r == 255 && g == 255 && b == 255;
+                let isTransparent = a == 0;
+                if (!isTransparent && (!isWhite)) {
+                    pix.x.push(x);
+                    pix.y.push(y);
+                }
+            }
+        }
+        pix.x.sort(function (a, b) { return a - b });
+        pix.y.sort(function (a, b) { return a - b });
+        var n = pix.x.length - 1;
+
+        w = 1 + pix.x[n] - pix.x[0];
+        h = 1 + pix.y[n] - pix.y[0];
+        var cut = ctx.getImageData(pix.x[0], pix.y[0], w, h);
+
+
+        let canvasNew = document.createElement('canvas');
+        canvasNew.width = w + this.horizMargin * 2;
+        canvasNew.height = h + this.vertMargin * 2;
+
+        let ctxNew = canvasNew.getContext("2d")
+        
+
+        if (!this.useTransparent) {
+            ctxNew.fillStyle = 'white';
+            ctxNew.fillRect(0, 0, ctxNew.canvas.width, ctxNew.canvas.height);
+        } else {
+            ctxNew.clearRect(0, 0, ctxNew.canvas.width, ctxNew.canvas.height);
+        }
+
+        ctxNew.putImageData(cut, this.horizMargin, this.vertMargin);
+
+        return canvasNew;
+    }
+
+    createCroppedCanvas() {
+        return this.cropImageFromCanvas(this.ctx, 30, 30);
     }
 
     saveImage() {
         const canvas = this.createCroppedCanvas();
-    
+
         const a = document.createElement("a");
         a.href = canvas.toDataURL("image/png");
         a.setAttribute("download", "5000choyen.png");
-    
+
         document.body.appendChild(a);
         a.click();
     }
-    
+
     openImage() {
         const canvas = this.createCroppedCanvas();
         let contentURI = canvas.toDataURL();
@@ -192,7 +246,7 @@ export default class Drawer {
         let contentURI = canvas.toDataURL();
         window.open(contentURI);
     }
-    
+
 }
 
 
