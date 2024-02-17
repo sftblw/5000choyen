@@ -1,6 +1,13 @@
 # 5000choyen with solid & unocss
 
+[GO TO WEB (todo)]()
 
+## howto
+
+```
+pnpm i
+pnpm vite
+```
 
 ## forked from
 
@@ -15,3 +22,8 @@
 - download
 - credits
 - gh-pages
+
+
+## acknowledgments
+
+- contains ChatGPT-aided sources.

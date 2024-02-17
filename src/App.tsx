@@ -20,7 +20,6 @@ const App: Component = () => {
         footer
       </footer>
     </>
-    
   );
 };
 
