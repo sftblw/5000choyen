@@ -148,8 +148,8 @@ export default class Drawer {
         }, e) as unknown as MouseEvent;
         this.onCursorUp(eMock);
     };
-    
-    saveImage() {
+
+    createCroppedCanvas() {
         const width = Math.max(this.topText.x + this.topText.w, this.bottomText.x + this.bottomText.w);
         const height = this.ctx.canvas.height;
     
@@ -160,6 +160,12 @@ export default class Drawer {
     
         const ctx = canvas.getContext('2d');
         ctx.putImageData(data, 0, 0);
+
+        return canvas;
+    }
+
+    saveImage() {
+        const canvas = this.createCroppedCanvas();
     
         const a = document.createElement("a");
         a.href = canvas.toDataURL("image/png");
@@ -170,7 +176,20 @@ export default class Drawer {
     }
     
     openImage() {
-        let contentURI = this.canvas.toDataURL()
+        const canvas = this.createCroppedCanvas();
+        let contentURI = canvas.toDataURL();
+
+        // https://stackoverflow.com/a/27798235
+        let image = new Image();
+        image.src = contentURI;
+
+        let w = window.open("");
+        w.document.write(image.outerHTML);
+    }
+
+    openImageDataURL() {
+        const canvas = this.createCroppedCanvas();
+        let contentURI = canvas.toDataURL();
         window.open(contentURI);
     }
     

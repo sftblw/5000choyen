@@ -1,0 +1,9 @@
+.select__root {
+    @apply inline-flex flex-col gap-1;
+    .select__label {
+        @apply m-0 mt-4 mb-0;
+    }
+    .select__trigger {
+        @apply m-0 mt-0 mb-4;
+    }
+}

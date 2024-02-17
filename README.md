@@ -1,6 +1,6 @@
 # 5000choyen with solid & unocss
 
-[GO TO WEB (todo)]()
+[GO TO WEB](https://sftblw.github.io/5000choyen/)
 
 ## howto
 

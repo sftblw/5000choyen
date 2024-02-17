@@ -1,10 +1,9 @@
 import { Component, onMount, createSignal, createEffect } from 'solid-js';
 import "./DrawPage.scss";
-// import { draw_5000yen } from './Drawer';
 
 import Drawer from './lib/drawer';
 
-import { TextField } from "@kobalte/core";
+import { Button, TextField } from "@kobalte/core";
 import FontSelect from './FontSelect';
 
 const DrawPage: Component = () => {
@@ -19,7 +18,9 @@ const DrawPage: Component = () => {
   // Enhanced drawing function with TypeScript annotation for context
   const drawSomething = () => {
     if (canvasRef == null) { return; }
-    drawer = new Drawer(canvasRef);
+    if (drawer == null) {
+      drawer = new Drawer(canvasRef);
+    }
 
     drawer.draw(textRed(), textWhite(), `100px ${selectedFont()}`);
   };
@@ -36,7 +37,19 @@ const DrawPage: Component = () => {
 
   return (
     <div>
-      <canvas ref={canvasRef} width={1500} height={290} class='b-sky b-1 m-4'></canvas>
+      <canvas ref={canvasRef} width={1500} height={270} class="canvas-hoshii"></canvas>
+      
+      <div class="buttons">
+        <Button.Root class="icon-button" onClick={() => drawer?.saveImage()}>
+          <div class="i-fluent:arrow-download-48-filled">download</div>
+        </Button.Root>
+        <Button.Root class="icon-button" onClick={() => drawer?.openImage()}>
+          <div class="i-fluent:open-48-filled">open in new tab</div>
+        </Button.Root>
+        <Button.Root class="icon-button" onClick={() => drawer?.openImageDataURL()}>
+          <div class="i-fluent:open-in-browser-24-filled">open in new tab (data URL)</div>
+        </Button.Root>
+      </div>
 
       <TextField.Root class="text-field" value={textRed()} onChange={setTextRed}>
         <TextField.Label class="text-field__label">5000兆円</TextField.Label>
@@ -47,7 +60,11 @@ const DrawPage: Component = () => {
         <TextField.Input class="text-field__input" />
       </TextField.Root>
 
-      <input type="text" value={selectedFont()} onChange={(ev) => setSelectedFont(ev.target.textContent)}/>
+      <TextField.Root class="text-field" value={selectedFont()} onChange={setSelectedFont}>
+        <TextField.Label class="text-field__label">Font (manual input)</TextField.Label>
+        <TextField.Input class="text-field__input" />
+      </TextField.Root>
+
       <FontSelect selectedFont={selectedFont} setSelectedFont={(font) => setSelectedFont(font)}/>
     </div>
   );

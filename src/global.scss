@@ -11,4 +11,17 @@ h1, h2, h3, h4, h5, h6 {
 
 input[type=text] {
     @apply border-sky border-1 shadow-inset;
+    @apply m-2 p-2;
+}
+
+a {
+    @apply text-bluegray underline;
+}
+
+.icon-button {
+    @apply text-4xl p-2 border-1 border-gray bg-white border-solid rounded-4;
+    // @apply flex justify-stretch items-stretch w-full h-full;
+    & > * {
+        @apply block;
+    }
 }

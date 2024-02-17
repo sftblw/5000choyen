@@ -11,7 +11,7 @@ interface FontSelectProps {
 
 const FontSelect: Component = (props: FontSelectProps) => {
   const [fonts, setFonts] = createSignal([]);
-  const [fontsMessage, setFontsMessage] = createSignal("SystemFont (not loaded)");
+  const [fontsMessage, setFontsMessage] = createSignal("System Font Selection (click to load)");
 
   let selectTriggerRef: HTMLButtonElement | undefined = undefined;
   let selectRootRef: any | undefined = undefined;
@@ -19,7 +19,7 @@ const FontSelect: Component = (props: FontSelectProps) => {
   const unique = (array) => [...new Set(array)];
   
   if (!("queryLocalFonts" in window)) {
-    setFontsMessage("SystemFont (unsupported)");
+    setFontsMessage("This browser does not support listing System Font.");
   }
 
   // Async function to query local fonts
@@ -51,9 +51,9 @@ const FontSelect: Component = (props: FontSelectProps) => {
   return (
     <div> 
       <Select.Root
+        class="select__root"
         options={fonts()}
         onClick={() => checkFontLoad()}
-        placeholder={fontsMessage()}
         value={props.selectedFont()}
         onChange={props.setSelectedFont}
         ref={selectRootRef}
@@ -65,8 +65,11 @@ const FontSelect: Component = (props: FontSelectProps) => {
           </Select.Item>
         )}
       >
+      <Select.Label class="select__label">
+        {fontsMessage()}
+      </Select.Label>
       <Select.Trigger class="select__trigger" aria-label="click" ref={selectTriggerRef}>
-      <Select.Value<string>>{state => state.selectedOption()}</Select.Value>
+      <Select.Value<string> class="select__value">{state => state.selectedOption()}</Select.Value>
         <Select.Icon class="select__icon">
         </Select.Icon>
       </Select.Trigger>

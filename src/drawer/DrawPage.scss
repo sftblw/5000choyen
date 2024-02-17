@@ -1,0 +1,16 @@
+.text-field {
+    @apply flex flex-col gap-1;
+    label {
+        @apply m-0 mt-4 mb-0;
+    }
+    input {
+        @apply m-0 mt-0 mb-4;
+    }
+}
+
+canvas.canvas-hoshii {
+    @apply b-sky b-1 mt-4 mb-4;
+}
+.buttons {
+    @apply flex flex-row gap-4;
+}
