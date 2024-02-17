@@ -1,0 +1,13 @@
+html, body {height: 100%;}
+body {
+    @apply flex flex-col gap-lg;
+}
+
+header, footer {
+    @apply text-center p-4 shadow-lg;
+}
+
+main {
+    @apply flex-1;
+    @apply p-4;
+}
